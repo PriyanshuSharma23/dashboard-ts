@@ -2,6 +2,7 @@ import {
   collection,
   getCountFromServer,
   query,
+  Timestamp,
   where,
 } from "firebase/firestore";
 import type {
@@ -9,6 +10,7 @@ import type {
   AggregateField,
 } from "firebase/firestore";
 import { db } from "../App";
+import { IntervalTime, subtractDate } from "../utils/date-utils";
 
 export const productTypes = {
   mobile: "Mobile",
@@ -140,4 +142,50 @@ export const salesMetrics = async () => {
   });
 
   return costPurchaseCount;
+};
+
+export const salesCount = async (interval: IntervalTime) => {
+  let today = Timestamp.fromDate(new Date());
+  let prevDate = subtractDate(today, interval);
+
+  const q = query(
+    collection(db, "sales"),
+    where("date", ">=", prevDate),
+    where("date", "<=", today)
+  );
+
+  const snapshot = await getCountFromServer(q);
+
+  return snapshot.data().count;
+};
+
+export const salesIncrease = async (interval: IntervalTime) => {
+  let today = Timestamp.fromDate(new Date());
+  let midDate = subtractDate(today, interval);
+  let prevDate = subtractDate(midDate, interval);
+
+  const q1 = query(
+    collection(db, "sales"),
+    where("date", ">=", prevDate),
+    where("date", "<=", midDate)
+  );
+
+  const q2 = query(
+    collection(db, "sales"),
+    where("date", ">=", midDate),
+    where("date", "<=", today)
+  );
+
+  const promises = [getCountFromServer(q1), getCountFromServer(q2)];
+
+  return Promise.all(promises).then((snapshots) => {
+    const count1 = snapshots[0].data().count;
+    const count2 = snapshots[1].data().count;
+
+    return {
+      prevSalesCount: count1,
+      currSalesCount: count2,
+      increase: ((count2 - count1) / count1) * 100,
+    };
+  });
 };
