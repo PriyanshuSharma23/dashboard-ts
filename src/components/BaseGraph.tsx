@@ -30,7 +30,7 @@ export const BaseGraph = ({
       {qData.isLoading ? (
         <LoadingSpinner color={"text-purple-500"} />
       ) : (
-        <div className="flex flex-col lg:flex-row gap-2 items-center justify-between">
+        <div className="flex flex-col xl:flex-row gap-2 items-center justify-between">
           <div className={maxW != null ? maxW : "max-w-min"}>{children}</div>
           <article>
             <h1 className="text-2xl text-center">{heading}</h1>

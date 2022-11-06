@@ -6,7 +6,7 @@ export const Appendix = ({
   colors: string[];
 }) => {
   return (
-    <div className="flex gap-1 justify-center flex-row lg:flex-col flex-wrap">
+    <div className="flex gap-1 justify-center flex-row xl:flex-col flex-wrap">
       {labels.map((label, index) => {
         return (
           <div

@@ -1,12 +1,12 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import { ArcElement, Chart } from "chart.js";
-import { Doughnut, Pie } from "react-chartjs-2";
-import { Appendix } from "./Appendix";
+import { Doughnut } from "react-chartjs-2";
+import { graphBgColors } from "../constants";
+
 import { BaseGraph } from "./BaseGraph";
-import { LoadingSpinner } from "./LoadingSpinner";
 
 Chart.register(ArcElement);
-const colors = ["#FDFDBD", "#C8FFD4", "#B8E8FC", "#B1AFFF"];
+const colors = graphBgColors;
 
 export const DoughnutChart = ({
   q,
