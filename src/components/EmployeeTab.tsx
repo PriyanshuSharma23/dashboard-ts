@@ -4,7 +4,9 @@ import { addIcon, deleteIcon, updateIcon } from "../assets/svg-assets";
 import { useModal } from "../contexts/ModalContext";
 import { EmployeeUtils } from "../firebase/firebase-utils";
 import { UserModel } from "../models/user-model";
+import { formatCurrency } from "../utils/currency-format";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { Modal } from "./Modal";
 import OutsideAlerter from "./OutsideClick";
 
 export const EmployeeTab = () => {
@@ -140,7 +142,7 @@ export const EmployeeTab = () => {
                             <input
                               type="checkbox"
                               name={`${employee.name} row`}
-                              checked={checked?.[index]}
+                              checked={checked?.[index] ?? false}
                               onChange={() => {
                                 setChecked(
                                   checked?.map((c, i) => (i === index ? !c : c))
@@ -158,7 +160,7 @@ export const EmployeeTab = () => {
                             {employee.role}
                           </td>
                           <td className="table-cell font-light">
-                            {employee.salary}
+                            {formatCurrency(employee.salary)}
                           </td>
                         </tr>
                       ))}
@@ -176,11 +178,12 @@ export const EmployeeTab = () => {
                 duration-300 flex items-center justify-center `}
                 onClick={() => {
                   showModel(
-                    <OutsideAlerter cb={closeModal}>
-                      <div className="bg-white shadow-md">
-                        <h1>hello</h1>
-                      </div>
-                    </OutsideAlerter>
+                    <Modal
+                      onSubmit={(newUser) => {
+                        addUserMutation.mutate(newUser);
+                        closeModal();
+                      }}
+                    />
                   );
                 }}
               >
@@ -195,6 +198,29 @@ export const EmployeeTab = () => {
                 text-white font-bold
                 py-2 px-4 rounded transition-colors w-28
                 duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed`}
+                onClick={() => {
+                  const user = employeeQuery.data?.find(
+                    (user, index) => checked && checked[index]
+                  );
+
+                  if (!user) return;
+                  showModel(
+                    <Modal
+                      onSubmit={(updatedUser) => {
+                        updateUserMutation.mutate(
+                          new UserModel(
+                            user.id,
+                            updatedUser.name,
+                            updatedUser.salary,
+                            updatedUser.role
+                          )
+                        );
+                        closeModal();
+                      }}
+                      initialUser={user}
+                    />
+                  );
+                }}
               >
                 {updateIcon}
                 <span className="ml-2">Update</span>

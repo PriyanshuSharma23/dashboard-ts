@@ -1,16 +1,21 @@
 import type { DocumentData } from "firebase/firestore";
-import { formatCurrency } from "../utils/currency-format";
+
+export interface User {
+  name: string;
+  salary: number;
+  role: string;
+}
 
 export class UserModel {
   public id: string;
   public name: string;
-  public salary: string;
+  public salary: number;
   public role: string;
 
   constructor(id: string, name: string, salary: number, role: string) {
     this.id = id;
     this.name = name;
-    this.salary = formatCurrency(salary);
+    this.salary = salary;
     this.role = role;
   }
 
