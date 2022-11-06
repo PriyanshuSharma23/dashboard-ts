@@ -55,27 +55,6 @@ export const SalesTab = () => {
   });
 
   return (
-    // <main
-    //   className="px-10 py-4
-    //     flex-grow min-w-[500px] h-screen overflow-scroll bg-blue-100"
-    //   // bg-gradient-to-br from-blue-100 to-purple-500 via-blue-400
-    // >
-    //   <div className="flex justify-between shadow-md p-2 bg-white rounded-lg">
-    //     <div className="prose w-max">
-    //       <h1 className="bg-gradient-to-t  from-black to-slate-400 bg-clip-text text-transparent">
-    //         Dashboard
-    //       </h1>
-    //     </div>
-
-    //     {/* sign out button */}
-    //     <button
-    //       className="bg-red-600 px-4 py-2 rounded-lg text-white hover:brightness-105"
-    //       onClick={signOut}
-    //     >
-    //       Sign out
-    //     </button>
-    //   </div>
-
     <div className="grid  xl:grid-cols-2 gap-4 mt-4">
       {salesCountQueryResult.isLoading ? (
         <div className="h-12 bg-white rounded-lg shadow-md flex items-center justify-center">

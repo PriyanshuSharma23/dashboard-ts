@@ -3,6 +3,7 @@ import profileImage from "./assets/profile.svg";
 import { employee, logo, sales } from "./assets/svg-assets";
 import { useState } from "react";
 import { SalesTab } from "./components/SalesTab";
+import { EmployeeTab } from "./components/EmployeeTab";
 
 enum Tabs {
   Sales,
@@ -46,9 +47,10 @@ export const Dashboard = () => {
         <div className="absolute bottom-0 left-0 px-2 py-4 bg-blue-500 w-full">
           <div className="flex items-center gap-4 w-max">
             <img
-              src={profileImage}
+              src={user.photoURL ?? profileImage}
               alt="user's profile image"
               className="w-12 h-12 rounded-full bg-white"
+              referrerPolicy="no-referrer"
             />
             <span>
               <h3 className="text-3xl">
@@ -79,7 +81,7 @@ export const Dashboard = () => {
           </button>
         </div>
 
-        {activeTab == Tabs.Sales ? <SalesTab /> : <div>Employee Tab</div>}
+        {activeTab == Tabs.Sales ? <SalesTab /> : <EmployeeTab />}
       </main>
     </div>
   );

@@ -6,6 +6,7 @@ import { SignIn } from "./SignIn";
 import { firebaseConfig } from "./firebase/firebase-config";
 import { initializeApp } from "firebase/app";
 import { initializeFirestore } from "firebase/firestore";
+import { Overlay } from "./components/Overlay";
 
 const app = initializeApp(firebaseConfig);
 export const db = initializeFirestore(app, {});
@@ -17,5 +18,10 @@ export const App = () => {
     return <SignIn />;
   }
 
-  return <Dashboard />;
+  return (
+    <>
+      <Dashboard />
+      <Overlay />
+    </>
+  );
 };

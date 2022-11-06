@@ -1,9 +1,15 @@
 import {
+  addDoc,
   collection,
+  deleteDoc,
+  doc,
   getCountFromServer,
+  getDocs,
   query,
+  setDoc,
   Timestamp,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import type {
   AggregateQuerySnapshot,
@@ -11,6 +17,7 @@ import type {
 } from "firebase/firestore";
 import { db } from "../App";
 import { IntervalTime, subtractDate } from "../utils/date-utils";
+import { UserModel } from "../models/user-model";
 
 export const productTypes = {
   mobile: "Mobile",
@@ -189,3 +196,47 @@ export const salesIncrease = async (interval: IntervalTime) => {
     };
   });
 };
+
+export class EmployeeUtils {
+  static allEmployees = async () => {
+    const ref = collection(db, "employees");
+
+    const snapshot = await getDocs(ref);
+
+    let ret: UserModel[] = [];
+
+    for (let i = 0; i < snapshot.docs.length; i++) {
+      ret.push(UserModel.fromSnapshot(snapshot.docs[i]));
+    }
+
+    return ret;
+  };
+
+  static updateEmployee = async (user: UserModel) => {
+    const ref = doc(db, "employees", user.id);
+
+    await setDoc(ref, user.toMap());
+  };
+
+  static addEmployee = async (user: {
+    name: string;
+    salary: number;
+    role: string;
+  }) => {
+    const ref = collection(db, "employees");
+
+    await addDoc(ref, user);
+  };
+
+  static deleteManyEmployees = async (users: string[]) => {
+    const batch = writeBatch(db);
+
+    users.forEach((user) => {
+      const ref = doc(db, "employees", user);
+
+      batch.delete(ref);
+    });
+
+    await batch.commit();
+  };
+}
