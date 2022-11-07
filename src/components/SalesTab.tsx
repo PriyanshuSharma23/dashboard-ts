@@ -98,7 +98,10 @@ export const SalesTab = () => {
                     : "text-red-500"
                 } font-bold`}
               >
-                {salesIncQueryResult.data?.increase.toFixed(2)}%
+                {isNaN(salesIncQueryResult.data?.increase ?? 0)
+                  ? 0
+                  : salesIncQueryResult.data?.increase?.toFixed(2)}
+                %
               </span>{" "}
               {salesIncQueryResult.data?.increase! > 0 ? "⬆️" : "⬇️"}
             </h1>

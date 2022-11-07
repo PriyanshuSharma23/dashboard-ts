@@ -19,7 +19,7 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="flex">
+    <div className="flex overflow-hidden">
       <aside
         className="md:w-1/5 min-w-[250px] 
         shadow-inner
